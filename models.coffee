@@ -9,5 +9,7 @@ module.exports =
       callback(data)
 
   set: (key, value) ->
-    client.lpush key, value
-    client.ltrim key, 0, 100000
+    m = client.multi()
+    m.lpush(key, value)
+    m.ltrim(key, 0, 100000)
+    m.exec()

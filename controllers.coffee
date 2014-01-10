@@ -2,17 +2,18 @@ models = require './models'
 stats = require './stats'
 
 module.exports =
-  show_metric: (serie, metric, res) ->
+  show_metric: (serie, metric, callback) ->
     models.get serie, (data) ->
-      res.json
+      callback
         metric: stats[metric] data
 
-  show: (serie, res) ->
+  show: (serie, callback) ->
     models.get serie, (data) ->
       o = {} #data: data
       for name, func of stats
         o[name] = func data
-      res.json o
+      callback(o)
 
   update: (serie, body) ->
     models.set serie, body.data
+
